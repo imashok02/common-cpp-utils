@@ -7,6 +7,7 @@ namespace views {
   CommonPopup* CommonPopup::createPopup(Size popup_size) {
     CommonPopup* instance = CommonPopup::create();
     instance->setPopupSize(popup_size);
+    instance->build();
     return instance;
   }
 
@@ -21,8 +22,22 @@ namespace views {
     return true;
   }
 
-  void CommonPopup::setPopupTitle(string titleText) {
+  void CommonPopup::build() {
+    LayerColor::onEnter();
+    setColor(Color3B::BLACK);
+    setOpacity(160);
+    viewSize = Director::getInstance()->getVisibleSize();
+    addMainLayout();
+    addTitleLayout();
+    addContentLayout();
+    addButtonsLayout();
+    mainLayout->justifyChildren(CommonLayout::JUSTIFY::EVENLY);
+    swallowTouches();
+  }
+
+  void CommonPopup::setPopupTitle(string titleText, Color3B color) {
     titleNode->setString(titleText);
+    titleNode->setColor(color);
     titleLayout->justifyChildren(CommonLayout::JUSTIFY::EVENLY);
   }
 
@@ -36,23 +51,13 @@ namespace views {
       this);
   }
 
-  void CommonPopup::onEnter() {
-    LayerColor::onEnter();
-    setColor(Color3B::BLACK);
-    setOpacity(160);
-    viewSize = Director::getInstance()->getVisibleSize();
-    addMainLayout();
-    addTitleLayout();
-    addContentLayout();
-    addButtonsLayout();
-    mainLayout->justifyChildren(CommonLayout::JUSTIFY::EVENLY);
-    swallowTouches();
+  void CommonPopup::setBgImage(string img) {
+     mainLayout->setBackGroundImage(img, ui::Widget::TextureResType::PLIST);
   }
 
   void CommonPopup::addMainLayout() {
     mainLayout = CommonLayout::create();
     mainLayout->setContentSize(popupSize);
-    mainLayout->setBackGroundImage(core::Config::POPUP_BG_IMAGE, ui::Widget::TextureResType::PLIST);
     mainLayout->setBackGroundImageScale9Enabled(true);
     mainLayout->setAnchorPoint(Point(0.5f, 0.5f));
     mainLayout->setPosition(Vec2(viewSize.width / 2, viewSize.height / 2));

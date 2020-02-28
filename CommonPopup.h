@@ -9,10 +9,15 @@ namespace views {
     public:
       static CommonPopup* createPopup(Size popup_size);
       virtual bool init();
-      virtual void onEnter();
-      void setPopupTitle(string titleText);
+      void build();
+      void setPopupTitle(string titleText, Color3B color);
+      void setBgImage(string img);
       void closePopup();
       CREATE_FUNC(CommonPopup);
+      CommonLayout* mainLayout;
+      CommonLayout* titleLayout;
+      CommonLayout* contentLayout;
+      CommonLayout* buttonsLayout;
     private:
       void addMainLayout();
       void swallowTouches();
@@ -20,10 +25,6 @@ namespace views {
       void addContentLayout();
       void addButtonsLayout();
       void setPopupSize(Size popup_size);
-      CommonLayout* mainLayout;
-      CommonLayout* titleLayout;
-      CommonLayout* contentLayout;
-      CommonLayout* buttonsLayout;
       ui::Text* titleNode;
       Size popupSize;
       Size viewSize;
